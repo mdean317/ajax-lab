@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react';
 import './App.css'
 
+import * as SpaceshipFetch from './assets/Components/SpaceshipFetch/SpaceshipFetch.js';
+import SpaceshipSearch from './assets/Components/SpaceshipSearch/SpaceshipSearch.jsx';
+import Starships from './assets/Components/Starships/Starships.jsx';
+
+const BASE_URL = "https://swapi.dev/api/starships/"
+
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [starships, setstarships] = useState([]);
+
+  const fetchData = async (query) => {
+    
+    const data = await SpaceshipFetch.get(query);
+    
+    const newStarships = [{}];
+
+    data.results.forEach((object, index) => {
+      newStarships[index] = object;
+    });
+
+    console.log(newStarships);
+    setstarships(newStarships);
+
+    
+  };
+
+  useEffect(() => {
+
+    const fetchDefaultData = async () => {
+
+      const data = await SpaceshipFetch.get(BASE_URL);
+
+      const newStarships = [{}];
+
+      data.results.forEach((object, index) => {
+        newStarships[index] = object;
+      });
+
+      console.log(newStarships);
+
+      setstarships(newStarships);
+    };
+
+    fetchDefaultData();
+  }, 
+
+  []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <SpaceshipSearch results={starships.length} fetchData={fetchData}/>
+      <br></br>
+      <Starships starships={starships}/>
     </>
   )
 }
 
 export default App
+

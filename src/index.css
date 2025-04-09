@@ -66,3 +66,19 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.starships-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.spaceship-container {
+  color:aqua;
+  background-image: url('./assets/space.jpeg');
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  border: 1px solid black;
+  box-shadow: 0 2px 4px rgba(127, 255, 0212, 0.1);
+  width: 200px;
+  
+}
